@@ -4,51 +4,1136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora MRU - Movimiento Rectilíneo Uniforme</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800;900&display=swap"
-        rel="stylesheet">
+    <title>Formulario de Física - Steam Edition</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0e141b 0%, #1a2332 100%);
+            color: #c7d5e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header con animación shimmer */
+        .header {
+            background: rgba(27, 40, 56, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(102, 192, 244, 0.2);
+            border-radius: 10px;
+            padding: 40px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto shimmer animado */
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                    transparent,
+                    rgba(102, 192, 244, 0.05),
+                    transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            background: linear-gradient(135deg, #66c0f4 0%, #2d73ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3em;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header-subtitle {
+            color: #8f98a0;
+            font-size: 1.1em;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        /* Navegación optimizada */
+        .nav-container {
+            background: rgba(27, 40, 56, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(102, 192, 244, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-tab {
+            background: rgba(23, 26, 33, 0.7);
+            border: 1px solid rgba(102, 192, 244, 0.2);
+            padding: 14px 28px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #8f98a0;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto de línea animada en hover */
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #06BFFF, #2D73FF);
+            transition: left 0.4s ease;
+        }
+
+        .nav-tab:hover::before {
+            left: 0;
+        }
+
+        .nav-tab:hover {
+            background: rgba(42, 71, 94, 0.8);
+            border-color: #66c0f4;
+            color: #66c0f4;
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, rgba(6, 191, 255, 0.4) 0%, rgba(45, 115, 255, 0.4) 100%);
+            border-color: #66c0f4;
+            color: #ffffff;
+        }
+
+        .nav-tab.active::before {
+            left: 0;
+        }
+
+        .nav-tab i {
+            margin-right: 8px;
+        }
+
+        /* Secciones de contenido */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 25px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Tarjetas optimizadas */
+        .formula-card {
+            background: rgba(27, 40, 56, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(102, 192, 244, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Borde izquierdo */
+        .formula-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #06BFFF 0%, #2D73FF 100%);
+            border-radius: 12px 0 0 12px;
+            transition: width 0.3s ease;
+        }
+
+        .formula-card:hover::before {
+            width: 6px;
+        }
+
+        .formula-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 192, 244, 0.25);
+            border-color: rgba(102, 192, 244, 0.4);
+        }
+
+        .formula-title {
+            color: #66c0f4;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .formula-title i {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .formula-card:hover .formula-title i {
+            transform: scale(1.15);
+        }
+
+        .formula-content {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 1.3em;
+            text-align: center;
+            border: 1px solid rgba(102, 192, 244, 0.15);
+            transition: border-color 0.3s ease;
+        }
+
+        .formula-card:hover .formula-content {
+            border-color: rgba(102, 192, 244, 0.3);
+        }
+
+        .variables {
+            background: rgba(23, 26, 33, 0.6);
+            padding: 18px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            line-height: 2;
+            border-left: 3px solid #5c7e10;
+            transition: border-left-width 0.3s ease;
+        }
+
+        .formula-card:hover .variables {
+            border-left-width: 4px;
+        }
+
+        .variables span {
+            display: block;
+            color: #acb2b8;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .variables span:hover {
+            color: #c7d5e0;
+            transform: translateX(5px);
+        }
+
+        .variables strong {
+            color: #beee11;
+            font-weight: 600;
+        }
+
+        .important-note {
+            background: rgba(180, 92, 159, 0.2);
+            border: 1px solid rgba(180, 92, 159, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            color: #e8b4d9;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+
+        .formula-card:hover .important-note {
+            background: rgba(180, 92, 159, 0.25);
+        }
+
+        .important-note i {
+            margin-right: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(27, 40, 56, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(102, 192, 244, 0.15);
+            border-radius: 10px;
+            color: #8f98a0;
+            font-size: 0.9em;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .footer i {
+            color: #66c0f4;
+            margin: 0 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .footer i:hover {
+            transform: rotate(360deg) scale(1.2);
+        }
+
+        /* Scroll personalizado */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(27, 40, 56, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #06BFFF 0%, #2D73FF 100%);
+            border-radius: 10px;
+            border: 2px solid rgba(27, 40, 56, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #2D73FF 0%, #06BFFF 100%);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-section.active {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .nav-tab {
+                font-size: 0.75em;
+                padding: 12px 20px;
+            }
+
+            .formula-card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="card">
-            <h1>Movimiento Rectilíneo Uniforme</h1>
-
-            <div class="formula-display">
-                d = v &times; t
-            </div>
-
-            <div class="input-group">
-                <div class="input-wrapper">
-                    <label for="velocity">Velocidad (v)</label>
-                    <input type="number" id="velocity" placeholder="m/s" step="0.1">
-                </div>
-                <div class="input-wrapper">
-                    <label for="time">Tiempo (t)</label>
-                    <input type="number" id="time" placeholder="segundos" step="0.1">
-                </div>
-            </div>
-
-            <div class="animation-wrapper">
-                <label style="margin-bottom:1rem; display:block;">Simulación Visual</label>
-                <div class="animation-track">
-                    <div class="particle" id="particle"></div>
-                </div>
-            </div>
-
-            <div class="result-section">
-                <span class="result-label">Distancia Recorrida (d)</span>
-                <span class="result-value" id="distance">0.00</span>
-                <span style="color: #64748b; margin-top: 0.5rem; display: block;">unidades</span>
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-atom"></i> FORMULARIO DE FÍSICA</h1>
+                <p class="header-subtitle">Steam Edition - Cinemática & Dinámica</p>
             </div>
         </div>
+
+        <!-- Navegación -->
+        <div class="nav-container">
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="showSection('mru')">
+                    <i class="fas fa-arrows-alt-h"></i> MRU
+                </div>
+                <div class="nav-tab" onclick="showSection('mruv')">
+                    <i class="fas fa-rocket"></i> MRUV
+                </div>
+                <div class="nav-tab" onclick="showSection('caida')">
+                    <i class="fas fa-arrow-down"></i> Caída Libre
+                </div>
+                <div class="nav-tab" onclick="showSection('parabolico')">
+                    <i class="fas fa-baseball-ball"></i> Mov. Parabólico
+                </div>
+                <div class="nav-tab" onclick="showSection('mcu')">
+                    <i class="fas fa-circle-notch"></i> MCU
+                </div>
+                <div class="nav-tab" onclick="showSection('mcuv')">
+                    <i class="fas fa-sync-alt"></i> MCUV
+                </div>
+                <div class="nav-tab" onclick="showSection('dinamica')">
+                    <i class="fas fa-hand-rock"></i> Dinámica
+                </div>
+                <div class="nav-tab" onclick="showSection('energia')">
+                    <i class="fas fa-bolt"></i> Energía
+                </div>
+            </div>
+        </div>
+
+        <!-- MRU -->
+        <div id="mru" class="content-section active">
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-ruler-horizontal"></i>
+                    Distancia en MRU
+                </div>
+                <div class="formula-content">
+                    \[d = v \cdot t\]
+                </div>
+                <div class="variables">
+                    <span><strong>d</strong> = distancia recorrida (m)</span>
+                    <span><strong>v</strong> = velocidad constante (m/s)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                </div>
+                <div class="important-note">
+                    <i class="fas fa-info-circle"></i>
+                    Velocidad constante: sin aceleración
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Velocidad
+                </div>
+                <div class="formula-content">
+                    \[v = \frac{d}{t}\]
+                </div>
+                <div class="variables">
+                    <span><strong>v</strong> = velocidad constante (m/s)</span>
+                    <span><strong>d</strong> = distancia recorrida (m)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Posición en MRU
+                </div>
+                <div class="formula-content">
+                    \[x = x_0 + vt\]
+                </div>
+                <div class="variables">
+                    <span><strong>x</strong> = posición final (m)</span>
+                    <span><strong>x₀</strong> = posición inicial (m)</span>
+                    <span><strong>v</strong> = velocidad (m/s)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-clock"></i>
+                    Tiempo
+                </div>
+                <div class="formula-content">
+                    \[t = \frac{d}{v}\]
+                </div>
+                <div class="variables">
+                    <span><strong>t</strong> = tiempo (s)</span>
+                    <span><strong>d</strong> = distancia (m)</span>
+                    <span><strong>v</strong> = velocidad (m/s)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MRUV -->
+        <div id="mruv" class="content-section">
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-rocket"></i>
+                    Velocidad Final
+                </div>
+                <div class="formula-content">
+                    \[v_f = v_0 + at\]
+                </div>
+                <div class="variables">
+                    <span><strong>v<sub>f</sub></strong> = velocidad final (m/s)</span>
+                    <span><strong>v₀</strong> = velocidad inicial (m/s)</span>
+                    <span><strong>a</strong> = aceleración (m/s²)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-route"></i>
+                    Posición en MRUV
+                </div>
+                <div class="formula-content">
+                    \[x = x_0 + v_0t + \frac{1}{2}at^2\]
+                </div>
+                <div class="variables">
+                    <span><strong>x</strong> = posición final (m)</span>
+                    <span><strong>x₀</strong> = posición inicial (m)</span>
+                    <span><strong>v₀</strong> = velocidad inicial (m/s)</span>
+                    <span><strong>a</strong> = aceleración (m/s²)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-lightning-bolt"></i>
+                    Ecuación Independiente del Tiempo
+                </div>
+                <div class="formula-content">
+                    \[v_f^2 = v_0^2 + 2ad\]
+                </div>
+                <div class="variables">
+                    <span><strong>v<sub>f</sub></strong> = velocidad final (m/s)</span>
+                    <span><strong>v₀</strong> = velocidad inicial (m/s)</span>
+                    <span><strong>a</strong> = aceleración (m/s²)</span>
+                    <span><strong>d</strong> = distancia (m)</span>
+                </div>
+                <div class="important-note">
+                    <i class="fas fa-star"></i>
+                    Útil cuando no conocemos el tiempo
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-chart-line"></i>
+                    Velocidad Media
+                </div>
+                <div class="formula-content">
+                    \[v_{media} = \frac{v_0 + v_f}{2}\]
+                </div>
+                <div class="variables">
+                    <span><strong>v<sub>media</sub></strong> = velocidad promedio (m/s)</span>
+                    <span><strong>v₀</strong> = velocidad inicial (m/s)</span>
+                    <span><strong>v<sub>f</sub></strong> = velocidad final (m/s)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Caída Libre -->
+        <div id="caida" class="content-section">
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-arrow-down"></i>
+                    Velocidad en Caída Libre
+                </div>
+                <div class="formula-content">
+                    \[v_f = v_0 + gt\]
+                </div>
+                <div class="variables">
+                    <span><strong>v<sub>f</sub></strong> = velocidad final (m/s)</span>
+                    <span><strong>v₀</strong> = velocidad inicial (m/s)</span>
+                    <span><strong>g</strong> = gravedad (9.8 m/s²)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                </div>
+                <div class="important-note">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Usar (+) si cae, (-) si sube
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-mountain"></i>
+                    Altura en Caída Libre
+                </div>
+                <div class="formula-content">
+                    \[h = h_0 + v_0t + \frac{1}{2}gt^2\]
+                </div>
+                <div class="variables">
+                    <span><strong>h</strong> = altura final (m)</span>
+                    <span><strong>h₀</strong> = altura inicial (m)</span>
+                    <span><strong>v₀</strong> = velocidad inicial (m/s)</span>
+                    <span><strong>g</strong> = gravedad (9.8 m/s²)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-bolt"></i>
+                    Velocidad sin Tiempo
+                </div>
+                <div class="formula-content">
+                    \[v_f^2 = v_0^2 + 2gh\]
+                </div>
+                <div class="variables">
+                    <span><strong>v<sub>f</sub></strong> = velocidad final (m/s)</span>
+                    <span><strong>v₀</strong> = velocidad inicial (m/s)</span>
+                    <span><strong>g</strong> = gravedad (9.8 m/s²)</span>
+                    <span><strong>h</strong> = altura (m)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-stopwatch"></i>
+                    Tiempo de Vuelo
+                </div>
+                <div class="formula-content">
+                    \[t_{vuelo} = \frac{2v_0}{g}\]
+                </div>
+                <div class="variables">
+                    <span><strong>t<sub>vuelo</sub></strong> = tiempo total en el aire (s)</span>
+                    <span><strong>v₀</strong> = velocidad inicial hacia arriba (m/s)</span>
+                    <span><strong>g</strong> = gravedad (9.8 m/s²)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Movimiento Parabólico -->
+        <div id="parabolico" class="content-section">
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-wave-square"></i>
+                    Componentes de Velocidad
+                </div>
+                <div class="formula-content">
+                    \[v_x = v_0 \cos(\theta)\]
+                    \[v_y = v_0 \sin(\theta) - gt\]
+                </div>
+                <div class="variables">
+                    <span><strong>v<sub>x</sub></strong> = velocidad horizontal (constante)</span>
+                    <span><strong>v<sub>y</sub></strong> = velocidad vertical (variable)</span>
+                    <span><strong>v₀</strong> = velocidad inicial (m/s)</span>
+                    <span><strong>θ</strong> = ángulo de lanzamiento</span>
+                    <span><strong>g</strong> = gravedad (9.8 m/s²)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-compass"></i>
+                    Posición en X y Y
+                </div>
+                <div class="formula-content">
+                    \[x = v_0 \cos(\theta) \cdot t\]
+                    \[y = v_0 \sin(\theta) \cdot t - \frac{1}{2}gt^2\]
+                </div>
+                <div class="variables">
+                    <span><strong>x</strong> = distancia horizontal (m)</span>
+                    <span><strong>y</strong> = altura (m)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-bullseye"></i>
+                    Alcance Máximo
+                </div>
+                <div class="formula-content">
+                    \[R = \frac{v_0^2 \sin(2\theta)}{g}\]
+                </div>
+                <div class="variables">
+                    <span><strong>R</strong> = alcance horizontal máximo (m)</span>
+                    <span><strong>v₀</strong> = velocidad inicial (m/s)</span>
+                    <span><strong>θ</strong> = ángulo de lanzamiento</span>
+                    <span><strong>g</strong> = gravedad (9.8 m/s²)</span>
+                </div>
+                <div class="important-note">
+                    <i class="fas fa-angle-double-right"></i>
+                    Alcance máximo cuando θ = 45°
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-chevron-up"></i>
+                    Altura Máxima
+                </div>
+                <div class="formula-content">
+                    \[h_{max} = \frac{v_0^2 \sin^2(\theta)}{2g}\]
+                </div>
+                <div class="variables">
+                    <span><strong>h<sub>max</sub></strong> = altura máxima (m)</span>
+                    <span><strong>v₀</strong> = velocidad inicial (m/s)</span>
+                    <span><strong>θ</strong> = ángulo de lanzamiento</span>
+                    <span><strong>g</strong> = gravedad (9.8 m/s²)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MCU -->
+        <div id="mcu" class="content-section">
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-sync"></i>
+                    Velocidad Angular
+                </div>
+                <div class="formula-content">
+                    \[\omega = \frac{2\pi}{T} = 2\pi f\]
+                </div>
+                <div class="variables">
+                    <span><strong>ω</strong> = velocidad angular (rad/s)</span>
+                    <span><strong>T</strong> = periodo (s)</span>
+                    <span><strong>f</strong> = frecuencia (Hz)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-history"></i>
+                    Periodo y Frecuencia
+                </div>
+                <div class="formula-content">
+                    \[T = \frac{1}{f}\]
+                    \[f = \frac{1}{T}\]
+                </div>
+                <div class="variables">
+                    <span><strong>T</strong> = periodo (tiempo de 1 vuelta) (s)</span>
+                    <span><strong>f</strong> = frecuencia (vueltas/segundo) (Hz)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-running"></i>
+                    Velocidad Lineal
+                </div>
+                <div class="formula-content">
+                    \[v = \omega r = \frac{2\pi r}{T}\]
+                </div>
+                <div class="variables">
+                    <span><strong>v</strong> = velocidad lineal o tangencial (m/s)</span>
+                    <span><strong>ω</strong> = velocidad angular (rad/s)</span>
+                    <span><strong>r</strong> = radio (m)</span>
+                    <span><strong>T</strong> = periodo (s)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-bullseye"></i>
+                    Aceleración Centrípeta
+                </div>
+                <div class="formula-content">
+                    \[a_c = \frac{v^2}{r} = \omega^2 r\]
+                </div>
+                <div class="variables">
+                    <span><strong>a<sub>c</sub></strong> = aceleración centrípeta (m/s²)</span>
+                    <span><strong>v</strong> = velocidad lineal (m/s)</span>
+                    <span><strong>ω</strong> = velocidad angular (rad/s)</span>
+                    <span><strong>r</strong> = radio (m)</span>
+                </div>
+                <div class="important-note">
+                    <i class="fas fa-location-arrow"></i>
+                    Apunta hacia el centro del círculo
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-hand-rock"></i>
+                    Fuerza Centrípeta
+                </div>
+                <div class="formula-content">
+                    \[F_c = m \frac{v^2}{r} = m\omega^2 r\]
+                </div>
+                <div class="variables">
+                    <span><strong>F<sub>c</sub></strong> = fuerza centrípeta (N)</span>
+                    <span><strong>m</strong> = masa (kg)</span>
+                    <span><strong>v</strong> = velocidad (m/s)</span>
+                    <span><strong>r</strong> = radio (m)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-ruler-combined"></i>
+                    Desplazamiento Angular
+                </div>
+                <div class="formula-content">
+                    \[\theta = \omega t\]
+                    \[s = \theta r\]
+                </div>
+                <div class="variables">
+                    <span><strong>θ</strong> = ángulo recorrido (rad)</span>
+                    <span><strong>ω</strong> = velocidad angular (rad/s)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                    <span><strong>s</strong> = arco recorrido (m)</span>
+                    <span><strong>r</strong> = radio (m)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MCUV -->
+        <div id="mcuv" class="content-section">
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-rocket"></i>
+                    Velocidad Angular Final
+                </div>
+                <div class="formula-content">
+                    \[\omega_f = \omega_0 + \alpha t\]
+                </div>
+                <div class="variables">
+                    <span><strong>ω<sub>f</sub></strong> = velocidad angular final (rad/s)</span>
+                    <span><strong>ω₀</strong> = velocidad angular inicial (rad/s)</span>
+                    <span><strong>α</strong> = aceleración angular (rad/s²)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                </div>
+                <div class="important-note">
+                    <i class="fas fa-plus-circle"></i>
+                    Usar (+) acelerado, (-) retardado
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-drafting-compass"></i>
+                    Desplazamiento Angular
+                </div>
+                <div class="formula-content">
+                    \[\theta = \omega_0 t + \frac{1}{2}\alpha t^2\]
+                </div>
+                <div class="variables">
+                    <span><strong>θ</strong> = ángulo recorrido (rad)</span>
+                    <span><strong>ω₀</strong> = velocidad angular inicial (rad/s)</span>
+                    <span><strong>α</strong> = aceleración angular (rad/s²)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-flash"></i>
+                    Sin Tiempo
+                </div>
+                <div class="formula-content">
+                    \[\omega_f^2 = \omega_0^2 + 2\alpha\theta\]
+                </div>
+                <div class="variables">
+                    <span><strong>ω<sub>f</sub></strong> = velocidad angular final (rad/s)</span>
+                    <span><strong>ω₀</strong> = velocidad angular inicial (rad/s)</span>
+                    <span><strong>α</strong> = aceleración angular (rad/s²)</span>
+                    <span><strong>θ</strong> = ángulo (rad)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-forward"></i>
+                    Velocidad Lineal
+                </div>
+                <div class="formula-content">
+                    \[v_f = v_0 + at\]
+                    \[v = \omega r\]
+                </div>
+                <div class="variables">
+                    <span><strong>v</strong> = velocidad tangencial (m/s)</span>
+                    <span><strong>a<sub>t</sub></strong> = aceleración tangencial = αr (m/s²)</span>
+                    <span><strong>ω</strong> = velocidad angular (rad/s)</span>
+                    <span><strong>r</strong> = radio (m)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-project-diagram"></i>
+                    Aceleraciones
+                </div>
+                <div class="formula-content">
+                    \[a_t = \alpha r\]
+                    \[a_c = \omega^2 r\]
+                    \[a_{total} = \sqrt{a_t^2 + a_c^2}\]
+                </div>
+                <div class="variables">
+                    <span><strong>a<sub>t</sub></strong> = aceleración tangencial (m/s²)</span>
+                    <span><strong>a<sub>c</sub></strong> = aceleración centrípeta (m/s²)</span>
+                    <span><strong>a<sub>total</sub></strong> = aceleración total (m/s²)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dinámica -->
+        <div id="dinamica" class="content-section">
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-fist-raised"></i>
+                    Segunda Ley de Newton
+                </div>
+                <div class="formula-content">
+                    \[F = ma\]
+                    \[\sum F = ma\]
+                </div>
+                <div class="variables">
+                    <span><strong>F</strong> = fuerza (N = kg·m/s²)</span>
+                    <span><strong>m</strong> = masa (kg)</span>
+                    <span><strong>a</strong> = aceleración (m/s²)</span>
+                </div>
+                <div class="important-note">
+                    <i class="fas fa-star"></i>
+                    La fuerza resultante determina la aceleración
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-weight"></i>
+                    Peso
+                </div>
+                <div class="formula-content">
+                    \[W = mg\]
+                </div>
+                <div class="variables">
+                    <span><strong>W</strong> = peso (N)</span>
+                    <span><strong>m</strong> = masa (kg)</span>
+                    <span><strong>g</strong> = gravedad (9.8 m/s²)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-fire"></i>
+                    Fuerza de Fricción
+                </div>
+                <div class="formula-content">
+                    \[f = \mu N\]
+                </div>
+                <div class="variables">
+                    <span><strong>f</strong> = fuerza de fricción (N)</span>
+                    <span><strong>μ</strong> = coeficiente de fricción (sin unidades)</span>
+                    <span><strong>N</strong> = fuerza normal (N)</span>
+                </div>
+                <div class="important-note">
+                    <i class="fas fa-info-circle"></i>
+                    μ<sub>estático</sub> > μ<sub>cinético</sub>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-redo-alt"></i>
+                    Torque (Momento)
+                </div>
+                <div class="formula-content">
+                    \[\tau = F \cdot d\]
+                    \[\tau = F \cdot L \cdot \sin(\theta)\]
+                </div>
+                <div class="variables">
+                    <span><strong>τ</strong> = torque (N·m)</span>
+                    <span><strong>F</strong> = fuerza aplicada (N)</span>
+                    <span><strong>d</strong> = distancia perpendicular (m)</span>
+                    <span><strong>L</strong> = brazo de palanca (m)</span>
+                    <span><strong>θ</strong> = ángulo entre F y L</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-briefcase"></i>
+                    Trabajo Mecánico
+                </div>
+                <div class="formula-content">
+                    \[W = F \cdot d \cdot \cos(\theta)\]
+                </div>
+                <div class="variables">
+                    <span><strong>W</strong> = trabajo (J = N·m)</span>
+                    <span><strong>F</strong> = fuerza (N)</span>
+                    <span><strong>d</strong> = desplazamiento (m)</span>
+                    <span><strong>θ</strong> = ángulo entre F y d</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Potencia
+                </div>
+                <div class="formula-content">
+                    \[P = \frac{W}{t} = F \cdot v\]
+                </div>
+                <div class="variables">
+                    <span><strong>P</strong> = potencia (W = J/s)</span>
+                    <span><strong>W</strong> = trabajo (J)</span>
+                    <span><strong>t</strong> = tiempo (s)</span>
+                    <span><strong>F</strong> = fuerza (N)</span>
+                    <span><strong>v</strong> = velocidad (m/s)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Energía -->
+        <div id="energia" class="content-section">
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-bolt"></i>
+                    Energía Cinética
+                </div>
+                <div class="formula-content">
+                    \[E_c = \frac{1}{2}mv^2\]
+                </div>
+                <div class="variables">
+                    <span><strong>E<sub>c</sub></strong> = energía cinética (J)</span>
+                    <span><strong>m</strong> = masa (kg)</span>
+                    <span><strong>v</strong> = velocidad (m/s)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-mountain"></i>
+                    Energía Potencial Gravitatoria
+                </div>
+                <div class="formula-content">
+                    \[E_p = mgh\]
+                </div>
+                <div class="variables">
+                    <span><strong>E<sub>p</sub></strong> = energía potencial (J)</span>
+                    <span><strong>m</strong> = masa (kg)</span>
+                    <span><strong>g</strong> = gravedad (9.8 m/s²)</span>
+                    <span><strong>h</strong> = altura (m)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-compress-arrows-alt"></i>
+                    Energía Potencial Elástica
+                </div>
+                <div class="formula-content">
+                    \[E_{pe} = \frac{1}{2}kx^2\]
+                </div>
+                <div class="variables">
+                    <span><strong>E<sub>pe</sub></strong> = energía potencial elástica (J)</span>
+                    <span><strong>k</strong> = constante elástica (N/m)</span>
+                    <span><strong>x</strong> = deformación (m)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-exchange-alt"></i>
+                    Trabajo y Energía
+                </div>
+                <div class="formula-content">
+                    \[W = \Delta E_c = E_{c2} - E_{c1}\]
+                </div>
+                <div class="variables">
+                    <span><strong>W</strong> = trabajo realizado (J)</span>
+                    <span><strong>ΔE<sub>c</sub></strong> = cambio en energía cinética (J)</span>
+                </div>
+                <div class="important-note">
+                    <i class="fas fa-arrows-alt-h"></i>
+                    El trabajo neto cambia la energía cinética
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-cogs"></i>
+                    Energía Mecánica
+                </div>
+                <div class="formula-content">
+                    \[E_M = E_c + E_p\]
+                </div>
+                <div class="variables">
+                    <span><strong>E<sub>M</sub></strong> = energía mecánica total (J)</span>
+                    <span><strong>E<sub>c</sub></strong> = energía cinética (J)</span>
+                    <span><strong>E<sub>p</sub></strong> = energía potencial (J)</span>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-title">
+                    <i class="fas fa-recycle"></i>
+                    Conservación de la Energía
+                </div>
+                <div class="formula-content">
+                    \[E_{CA} + E_{PA} = E_{CB} + E_{PB}\]
+                    \[E_{MA} = E_{MB}\]
+                </div>
+                <div class="variables">
+                    <span>La energía mecánica total se conserva</span>
+                    <span>(si no hay fricción ni fuerzas externas)</span>
+                </div>
+                <div class="important-note">
+                    <i class="fas fa-infinity"></i>
+                    Principio fundamental: La energía no se crea ni se destruye, solo se transforma
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><i class="fas fa-gamepad"></i> Formulario de Física - Steam Style Edition <i class="fas fa-gamepad"></i>
+            </p>
+            <p><i class="fas fa-graduation-cap"></i> Papu Mithic <i class="fas fa-graduation-cap"></i></p>
+            <p><i class="fas fa-atom"></i> Formulario Secundario <i class="fas fa-atom"></i></p>
+        </div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remover active de todos los tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Mostrar la sección seleccionada
+            document.getElementById(sectionId).classList.add('active');
+
+            // Activar el tab seleccionado
+            event.target.closest('.nav-tab').classList.add('active');
+
+            // Scroll suave hacia arriba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 
 </html>
