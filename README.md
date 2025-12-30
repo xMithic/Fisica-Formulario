@@ -1,2 +1,0 @@
-# Fisica-Formulario
-Por Diversión 
