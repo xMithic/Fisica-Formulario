@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora MRU - Movimiento Rectilíneo Uniforme</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Movimiento Rectilíneo Uniforme</h1>
+
+            <div class="formula-display">
+                d = v &times; t
+            </div>
+
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label for="velocity">Velocidad (v)</label>
+                    <input type="number" id="velocity" placeholder="m/s" step="0.1">
+                </div>
+                <div class="input-wrapper">
+                    <label for="time">Tiempo (t)</label>
+                    <input type="number" id="time" placeholder="segundos" step="0.1">
+                </div>
+            </div>
+
+            <div class="animation-wrapper">
+                <label style="margin-bottom:1rem; display:block;">Simulación Visual</label>
+                <div class="animation-track">
+                    <div class="particle" id="particle"></div>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <span class="result-label">Distancia Recorrida (d)</span>
+                <span class="result-value" id="distance">0.00</span>
+                <span style="color: #64748b; margin-top: 0.5rem; display: block;">unidades</span>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
